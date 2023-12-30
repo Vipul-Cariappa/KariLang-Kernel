@@ -1,0 +1,12 @@
+{
+  "display_name": "KariLang 0.0.1 (xkarilang)",
+  "argv": [
+      "@KARILANG_KERNELSPEC_PATH@xkarilang",
+      "-f",
+      "{connection_file}"
+  ],
+  "language": "KariLang",
+  "metadata": {"debugger": false
+  
+  }
+}
