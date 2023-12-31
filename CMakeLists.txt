@@ -12,6 +12,15 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
 
 set(KARILANG_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
+# Flex/Bison Build
+find_package(BISON 3.0 REQUIRED)
+
+bison_target(PARSER "src/KariLang/src/parser.y" "src/KariLang/src/parser.tab.c" DEFINES_FILE "src/KariLang/src/parser.tab.h" COMPILE_FLAGS "-Wall -Wcounterexamples")
+
+find_package(FLEX 2.0 REQUIRED)
+
+flex_target(LEXER "src/KariLang/src/lexer.l" "src/KariLang/src/lex.yy.c")
+
 # Versionning
 # ===========
 
@@ -119,6 +128,11 @@ set(KARILANG_SRC
 
 set(KARILANG_MAIN_SRC
     src/main.cpp
+    src/main.c
+    src/KariLang/src/semantics.c
+    src/KariLang/src/interpreter.c
+    src/KariLang/src/parser.tab.c
+    src/KariLang/src/lex.yy.c
 )
 
 
