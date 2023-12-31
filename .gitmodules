@@ -1,0 +1,3 @@
+[submodule "src/KariLang"]
+	path = src/KariLang
+	url = https://github.com/Vipul-Cariappa/KariLang.git
