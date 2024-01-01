@@ -1,5 +1,11 @@
 # ![xeus-karilang](docs/source/xeus-logo.svg)
 
+Jupyter Kernel for KariLang
+
+<!--
+
+
+
 [![Build Status](https://github.com/Vipul-Cariappa/KariLang-Kernel/actions/workflows/main.yml/badge.svg)](https://github.com/Vipul-Cariappa/KariLang-Kernel/actions/workflows/main.yml)
 
 [![Documentation Status](http://readthedocs.org/projects/xeus-karilang/badge/?version=latest)](https://xeus-karilangreadthedocs.io/en/latest/?badge=latest)
@@ -33,7 +39,7 @@ Then you can install in this environment `xeus-karilang` and its dependencies
 ```bash
 mamba install`xeus-karilang` notebook -c conda-forge
 ``` -->
-
+<!--
 ### Installing from source
 
 Or you can install it from the sources, you will first need to install dependencies
@@ -58,6 +64,8 @@ To try out xeus-karilang interactively in your web browser, just click on the bi
 
 [![Binder](binder-logo.svg)](https://mybinder.org/v2/gh/Vipul-Cariappa/KariLang-Kernel/main?urlpath=/lab/tree/notebooks/xeus-karilang.ipynb) -->
 
+
+<!--
 
 
 ## Documentation
@@ -85,3 +93,6 @@ development environment.
 
 This software is licensed under the `MIT license`. See the [LICENSE](LICENSE)
 file for details.
+
+
+-->
