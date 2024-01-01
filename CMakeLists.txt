@@ -76,7 +76,7 @@ endif()
 # ============
 
 set(xtl_REQUIRED_VERSION 0.7.0)
-set(xeus_REQUIRED_VERSION 3.0.5)
+set(xeus_REQUIRED_VERSION 3.0.0)
 
 if (NOT TARGET xtl)
     find_package(xtl ${xtl_REQUIRED_VERSION} REQUIRED)
@@ -114,6 +114,15 @@ if(EMSCRIPTEN)
 endif()
 
 
+# Building KariLang as Static Library
+add_library(KariLang_language STATIC 
+    src/main.c
+    src/KariLang/src/semantics.c
+    src/KariLang/src/interpreter.c
+    src/KariLang/src/parser.tab.c
+    src/KariLang/src/lex.yy.c
+)
+
 # Source files
 # ============
 
@@ -125,11 +134,6 @@ set(KARILANG_HEADERS
 set(KARILANG_SRC
     src/xinterpreter.cpp
     src/utils.cpp
-    src/main.c
-    src/KariLang/src/semantics.c
-    src/KariLang/src/interpreter.c
-    src/KariLang/src/parser.tab.c
-    src/KariLang/src/lex.yy.c
 )
 
 set(KARILANG_MAIN_SRC
@@ -272,19 +276,19 @@ endif ()
 # xkarilang
 # =======
 if (KARILANG_BUILD_EXECUTABLE)
-    find_package(xeus-zmq 1.0.2 REQUIRED)
+    find_package(xeus-zmq 1.0.1 REQUIRED)
     add_executable(xkarilang ${KARILANG_MAIN_SRC})
     # target_compile_features(xkarilang PRIVATE cxx_std_17)
     karilang_set_common_options(xkarilang)
     karilang_set_kernel_options(xkarilang)
-    target_link_libraries(xkarilang PRIVATE xeus-zmq)
+    target_link_libraries(xkarilang PRIVATE xeus-zmq KariLang_language)
 endif()
 
 if(EMSCRIPTEN)
     include(WasmBuildOptions)
     find_package(xeus-lite REQUIRED)
     add_executable(xkarilang src/main_emscripten_kernel.cpp )
-    target_link_libraries(xkarilang PRIVATE xeus-karilang-static xeus-lite)
+    target_link_libraries(xkarilang PRIVATE xeus-karilang-static xeus-lite KariLang_language)
     KARILANG_set_kernel_options(xkarilang)
     xeus_wasm_compile_options(xkarilang)
     xeus_wasm_link_options(xkarilang "web,worker")
