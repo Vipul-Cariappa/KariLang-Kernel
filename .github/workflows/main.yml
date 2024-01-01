@@ -13,15 +13,12 @@ on:
 jobs:
   unix:
     
-    runs-on: ${{ matrix.os }}
-    
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, macos-latest]
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: 'true'
 
       - name: Install micromamba
         uses: mamba-org/setup-micromamba@v1
@@ -31,7 +28,7 @@ jobs:
 
       - name: Install Bison and Flex
         run: |
-          sudo apt-get update && sudo apt-get -y upgrade
+          sudo apt-get update
           sudo apt-get install -y bison gcc g++ cmake make build-essential flex
 
       - name: Configure cmake
@@ -72,6 +69,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: 'true'
 
       - name: Install micromamba
         uses: mamba-org/setup-micromamba@v1
@@ -119,6 +118,8 @@ jobs:
     
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: 'true'
 
       - name: Verify emscripten
         run: emcc -v
@@ -126,7 +127,7 @@ jobs:
       - name: Install Bison and Flex
         run: |
           sudo apt-get update && sudo apt-get -y upgrade
-          sudo apt-get install -y bison gcc g++ cmake make build-essential flex
+          sudo apt-get install -y bison gcc g++ cmake make build-essential flex doctest-dev
 
       - name: Install xtl
         run: |
@@ -216,6 +217,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: 'true'
 
       - name: Install micromamba
         uses: mamba-org/setup-micromamba@v1
@@ -226,12 +229,14 @@ jobs:
       - name: Install Bison and Flex
         run: |
           sudo apt-get update && sudo apt-get -y upgrade
-          sudo apt-get install -y bison gcc g++ cmake make build-essential flex
+          sudo apt-get install -y bison gcc g++ cmake make build-essential flex doctest-dev
+
+      - name: Install emsdk
+        uses: mymindstorm/setup-emsdk@v13
 
       - name: Setup emsdk
         shell: bash -l {0}
         run: |
-          
           emsdk install ${{ matrix.emsdk_ver }}
           
 
