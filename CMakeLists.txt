@@ -124,16 +124,16 @@ set(KARILANG_HEADERS
 
 set(KARILANG_SRC
     src/xinterpreter.cpp
-)
-
-set(KARILANG_MAIN_SRC
-    src/main.cpp
     src/utils.cpp
     src/main.c
     src/KariLang/src/semantics.c
     src/KariLang/src/interpreter.c
     src/KariLang/src/parser.tab.c
     src/KariLang/src/lex.yy.c
+)
+
+set(KARILANG_MAIN_SRC
+    src/main.cpp
 )
 
 
