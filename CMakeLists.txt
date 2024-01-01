@@ -128,6 +128,7 @@ set(KARILANG_SRC
 
 set(KARILANG_MAIN_SRC
     src/main.cpp
+    src/utils.cpp
     src/main.c
     src/KariLang/src/semantics.c
     src/KariLang/src/interpreter.c
