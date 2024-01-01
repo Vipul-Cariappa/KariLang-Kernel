@@ -2,7 +2,7 @@ name: xeus-karilang
 channels:
   - conda-forge
 dependencies:
-  - xeus-karilang=0.1.0
+  # - xeus-karilang=0.1.0
   - notebook
   - ipywidgets>=7.6
   - jupyterlab=3
