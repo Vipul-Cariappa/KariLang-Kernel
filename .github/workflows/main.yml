@@ -177,7 +177,7 @@ jobs:
 
       - name: Install Bison and Flex
         run: |
-          sudo apt-get update && sudo apt-get -y upgrade
+          sudo apt-get update
           sudo apt-get install -y bison gcc g++ cmake make build-essential flex doctest-dev
 
       - name: Install emsdk

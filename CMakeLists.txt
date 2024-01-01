@@ -100,12 +100,12 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU"
     endif()
     
 
-    CHECK_CXX_COMPILER_FLAG("-std=c++17" HAS_CPP_17_FLAG)
-    if (HAS_CPP_17_FLAG)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
-    else ()
-        message(FATAL_ERROR "Unsupported compiler -- xeus requires C++17 support!")
-    endif ()
+    # CHECK_CXX_COMPILER_FLAG("-std=c++17" HAS_CPP_17_FLAG)
+    # if (HAS_CPP_17_FLAG)
+    #     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+    # else ()
+    #     message(FATAL_ERROR "Unsupported compiler -- xeus requires C++17 support!")
+    # endif ()
 endif ()
 
 if(EMSCRIPTEN)
@@ -159,12 +159,12 @@ macro(karilang_set_common_options target_name)
         target_compile_options(${target_name} PUBLIC -Wunused-parameter -Wextra -Wreorder)
 
         # C++17 flag
-        CHECK_CXX_COMPILER_FLAG("-std=c++17" HAS_CPP_17_FLAG)
-        if (HAS_CPP_17_FLAG)
-            target_compile_features(${target_name} PRIVATE cxx_std_17)
-        else ()
-            message(FATAL_ERROR "Unsupported compiler -- xeus-karilang requires C++17 support!")
-        endif ()
+        # CHECK_CXX_COMPILER_FLAG("-std=c++17" HAS_CPP_17_FLAG)
+        # if (HAS_CPP_17_FLAG)
+        #     target_compile_features(${target_name} PRIVATE cxx_std_17)
+        # else ()
+        #     message(FATAL_ERROR "Unsupported compiler -- xeus-karilang requires C++17 support!")
+        # endif ()
     endif ()
 
     if (APPLE)
@@ -221,7 +221,7 @@ macro(karilang_create_target target_name linkage output_name)
 
     target_compile_definitions(${target_name} PUBLIC "KARILANG_EXPORTS")
 
-    target_compile_features(${target_name} PRIVATE cxx_std_17)
+    # target_compile_features(${target_name} PRIVATE cxx_std_17)
 
     target_include_directories(${target_name}
                                PUBLIC
@@ -274,7 +274,7 @@ endif ()
 if (KARILANG_BUILD_EXECUTABLE)
     find_package(xeus-zmq 1.0.2 REQUIRED)
     add_executable(xkarilang ${KARILANG_MAIN_SRC})
-    target_compile_features(xkarilang PRIVATE cxx_std_17)
+    # target_compile_features(xkarilang PRIVATE cxx_std_17)
     karilang_set_common_options(xkarilang)
     karilang_set_kernel_options(xkarilang)
     target_link_libraries(xkarilang PRIVATE xeus-zmq)
