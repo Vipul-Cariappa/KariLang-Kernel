@@ -15,7 +15,7 @@ set(KARILANG_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 # Flex/Bison Build
 find_package(BISON 3.0 REQUIRED)
 
-bison_target(PARSER "src/KariLang/src/parser.y" "src/KariLang/src/parser.tab.c" DEFINES_FILE "src/KariLang/src/parser.tab.h" COMPILE_FLAGS "-Wall -Wcounterexamples")
+bison_target(PARSER "src/KariLang/src/parser.y" "src/KariLang/src/parser.tab.c" DEFINES_FILE "src/KariLang/src/parser.tab.h")
 
 find_package(FLEX 2.0 REQUIRED)
 
