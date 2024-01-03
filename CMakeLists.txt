@@ -261,6 +261,7 @@ if (KARILANG_BUILD_SHARED)
     # Build libraries
     karilang_create_target(xeus-karilang SHARED xeus-karilang)
     list(APPEND KARILANG_TARGETS xeus-karilang)
+    target_compile_options(xeus-karilang PUBLIC "-fPIC")
 endif ()
 
 if (KARILANG_BUILD_STATIC)
@@ -272,10 +273,8 @@ if (KARILANG_BUILD_STATIC)
         karilang_create_target(xeus-karilang-static STATIC xeus-karilang)
     endif ()
     list(APPEND KARILANG_TARGETS xeus-karilang-static)
+    target_compile_options(xeus-karilang-static PUBLIC "-fPIC")
 endif ()
-
-target_compile_options(xeus-karilang PUBLIC "-fPIC")
-target_compile_options(xeus-karilang-static PUBLIC "-fPIC")
 
 # xkarilang
 # =======
