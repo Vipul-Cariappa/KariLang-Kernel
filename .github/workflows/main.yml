@@ -57,102 +57,112 @@ jobs:
           pytest .  --reruns 5
 
 
-  # emscripten_wasm_docker:
-  #   runs-on: ubuntu-20.04
+  emscripten_wasm_docker:
+    runs-on: ubuntu-20.04
 
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       # container: ["emscripten/emsdk:2.0.34", "emscripten/emsdk:3.1.3", "emscripten/emsdk:latest"]
-  #       container: ["emscripten/emsdk:3.1.3"]
+    strategy:
+      fail-fast: false
+      matrix:
+        # container: ["emscripten/emsdk:2.0.34", "emscripten/emsdk:3.1.3", "emscripten/emsdk:latest"]
+        container: ["emscripten/emsdk:3.1.3"]
 
     
-  #   container: ${{ matrix.container}}
+    container: ${{ matrix.container}}
     
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #       with:
-  #         submodules: 'true'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: 'true'
 
-  #     - name: Verify emscripten
-  #       run: emcc -v
+      - name: Verify emscripten
+        run: emcc -v
 
-  #     - name: Install Bison and Flex
-  #       run: |
-  #         sudo apt-get update && sudo apt-get -y upgrade
-  #         sudo apt-get install -y bison gcc g++ cmake make build-essential flex doctest-dev
+      - name: Install Bison and Flex
+        run: |
+          sudo apt-get update && sudo apt-get -y upgrade
+          sudo apt-get install -y bison gcc g++ cmake make build-essential flex doctest-dev
 
-  #     - name: Install xtl
-  #       run: |
-  #         mkdir -p /opt/xtl/build
-  #         git clone https://github.com/xtensor-stack/xtl.git  /opt/xtl/src
-  #         cd /opt/xtl/src
-  #         git checkout 0.7.2
-  #         cd /opt/xtl/build
-  #         emcmake cmake ../src/ -DCMAKE_INSTALL_PREFIX=/custom_sysroot
-  #         emmake make -j2 install
+      - name: Install xtl
+        run: |
+          mkdir -p /opt/xtl/build
+          git clone https://github.com/xtensor-stack/xtl.git  /opt/xtl/src
+          cd /opt/xtl/src
+          git checkout 0.7.2
+          cd /opt/xtl/build
+          emcmake cmake ../src/ -DCMAKE_INSTALL_PREFIX=/custom_sysroot
+          emmake make -j2 install
 
-  #     - name: Install nlohmann-json
-  #       run: |
-  #         mkdir -p /opt/nlohmannjson/build
-  #         git clone https://github.com/nlohmann/json.git  /opt/nlohmannjson/src
-  #         cd  /opt/nlohmannjson/src
-  #         git checkout v3.9.0
-  #         cd /opt/nlohmannjson/build
-  #         emcmake cmake ../src/  -DJSON_BuildTests=OFF -DCMAKE_INSTALL_PREFIX=/custom_sysroot
-  #         emmake make -j2 install
+      - name: Install nlohmann-json
+        run: |
+          mkdir -p /opt/nlohmannjson/build
+          git clone https://github.com/nlohmann/json.git  /opt/nlohmannjson/src
+          cd  /opt/nlohmannjson/src
+          git checkout v3.9.0
+          cd /opt/nlohmannjson/build
+          emcmake cmake ../src/  -DJSON_BuildTests=OFF -DCMAKE_INSTALL_PREFIX=/custom_sysroot
+          emmake make -j2 install
 
-  #     - name: Install xeus
-  #       run: |
-  #         mkdir -p /opt/xeus/build
-  #         git clone https://github.com/jupyter-xeus/xeus.git  /opt/xeus/src
-  #         cd  /opt/xeus/src
+      - name: Install doctest
+        run: |
+          mkdir -p /opt/doctest/build
+          git clone https://github.com/doctest/doctest.git /opt/doctest/src
+          cd /opt/doctest/src
+          git checkout v2.4.11
+          cd /opt/doctest/build
+          emcmake cmake ../src/ -DCMAKE_INSTALL_PREFIX=/custom_sysroot
+          emmake make -j2 install
 
-  #         cd /opt/xeus/build
-  #         emcmake cmake ../src \
-  #           -DXEUS_EMSCRIPTEN_WASM_BUILD=ON \
-  #           -DXEUS_BUILD_TESTS=ON \
-  #           -DCMAKE_INSTALL_PREFIX=/custom_sysroot\
-  #           -Dxtl_DIR=/custom_sysroot/share/cmake/xtl \
-  #           -Dnlohmann_json_DIR=/custom_sysroot/lib/cmake/nlohmann_json
+      - name: Install xeus
+        run: |
+          mkdir -p /opt/xeus/build
+          git clone https://github.com/jupyter-xeus/xeus.git  /opt/xeus/src
+          cd  /opt/xeus/src
 
-  #         emmake make -j2
-  #         emmake make -j2 install
+          cd /opt/xeus/build
+          emcmake cmake ../src \
+            -DXEUS_EMSCRIPTEN_WASM_BUILD=ON \
+            -DXEUS_BUILD_TESTS=ON \
+            -DCMAKE_INSTALL_PREFIX=/custom_sysroot\
+            -Dxtl_DIR=/custom_sysroot/share/cmake/xtl \
+            -Dnlohmann_json_DIR=/custom_sysroot/lib/cmake/nlohmann_json
 
-  #     - name: Install xeus-lite
-  #       run: |
-  #         mkdir -p /opt/xeus-lite/build
-  #         git clone https://github.com/jupyter-xeus/xeus-lite.git  /opt/xeus-lite/src
-  #         cd /opt/xeus-lite/build
-  #         emcmake cmake ../src \
-  #           -DXEUS_EMSCRIPTEN_WASM_BUILD=ON \
-  #           -DCMAKE_INSTALL_PREFIX=/custom_sysroot \
-  #           -Dxtl_DIR=custom_sysroot/share/cmake/xtl \
-  #           -Dnlohmann_json_DIR=/custom_sysroot/lib/cmake/nlohmann_json \
-  #           -Dxeus_DIR=/custom_sysroot/lib/cmake/xeus
-  #         emmake make -j2
-  #         emmake make -j2 install
+          emmake make -j2
+          emmake make -j2 install
 
-  #     - name: Configure cmake rendered project
-  #       shell: bash -l {0}
-  #       run: |
-  #         emcmake cmake . \
-  #          -DKARILANG_EMSCRIPTEN_WASM_BUILD=ON \
-  #          -Dxtl_DIR=/custom_sysroot/share/cmake/xtl \
-  #          -Dnlohmann_json_DIR=/custom_sysroot/lib/cmake/nlohmann_json \
-  #          -Dxeus_DIR=/custom_sysroot/lib/cmake/xeus \
-  #          -Dxeus-lite_DIR=/custom_sysroot/lib/cmake/xeus-lite \
-  #          -DCMAKE_INSTALL_PREFIX=/custom_sysroot
+      - name: Install xeus-lite
+        run: |
+          mkdir -p /opt/xeus-lite/build
+          git clone https://github.com/jupyter-xeus/xeus-lite.git  /opt/xeus-lite/src
+          cd /opt/xeus-lite/build
+          emcmake cmake ../src \
+            -DXEUS_EMSCRIPTEN_WASM_BUILD=ON \
+            -DCMAKE_INSTALL_PREFIX=/custom_sysroot \
+            -Dxtl_DIR=custom_sysroot/share/cmake/xtl \
+            -Dnlohmann_json_DIR=/custom_sysroot/lib/cmake/nlohmann_json \
+            -Dxeus_DIR=/custom_sysroot/lib/cmake/xeus
+          emmake make -j2
+          emmake make -j2 install
 
-  #     - name: Build rendered project
-  #       shell: bash -l {0}
-  #       run: |
-  #         emmake make -j2
+      - name: Configure cmake rendered project
+        shell: bash -l {0}
+        run: |
+          emcmake cmake . \
+           -DKARILANG_EMSCRIPTEN_WASM_BUILD=ON \
+           -Dxtl_DIR=/custom_sysroot/share/cmake/xtl \
+           -Dnlohmann_json_DIR=/custom_sysroot/lib/cmake/nlohmann_json \
+           -Dxeus_DIR=/custom_sysroot/lib/cmake/xeus \
+           -Dxeus-lite_DIR=/custom_sysroot/lib/cmake/xeus-lite \
+           -DCMAKE_INSTALL_PREFIX=/custom_sysroot
 
-  #     - name: Install rendered project
-  #       shell: bash -l {0}
-  #       run: |
-  #         make install
+      - name: Build rendered project
+        shell: bash -l {0}
+        run: |
+          emmake make -j2
+
+      - name: Install rendered project
+        shell: bash -l {0}
+        run: |
+          make install
 
   emscripten_wasm:
 
