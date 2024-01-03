@@ -274,6 +274,9 @@ if (KARILANG_BUILD_STATIC)
     list(APPEND KARILANG_TARGETS xeus-karilang-static)
 endif ()
 
+target_compile_options(xeus-karilang PUBLIC "-fPIC")
+target_compile_options(xeus-karilang-static PUBLIC "-fPIC")
+
 # xkarilang
 # =======
 if (KARILANG_BUILD_EXECUTABLE)
