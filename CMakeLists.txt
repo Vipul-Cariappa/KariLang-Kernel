@@ -122,7 +122,7 @@ add_library(KariLang_language STATIC
     src/KariLang/src/parser.tab.c
     src/KariLang/src/lex.yy.c
 )
-target_compile_options(KariLang_language "-fPIC")
+target_compile_options(KariLang_language PUBLIC "-fPIC")
 
 # Source files
 # ============
