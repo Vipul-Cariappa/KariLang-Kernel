@@ -124,6 +124,7 @@ jobs:
             -DXEUS_BUILD_TESTS=ON \
             -DCMAKE_INSTALL_PREFIX=/custom_sysroot\
             -Dxtl_DIR=/custom_sysroot/share/cmake/xtl \
+            -Ddoctest_DIR=/custom_sysroot/lib/cmake/doctest \
             -Dnlohmann_json_DIR=/custom_sysroot/lib/cmake/nlohmann_json
 
           emmake make -j2
