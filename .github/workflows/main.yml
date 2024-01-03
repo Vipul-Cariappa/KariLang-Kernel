@@ -139,6 +139,7 @@ jobs:
             -DCMAKE_INSTALL_PREFIX=/custom_sysroot \
             -Dxtl_DIR=custom_sysroot/share/cmake/xtl \
             -Dnlohmann_json_DIR=/custom_sysroot/lib/cmake/nlohmann_json \
+            -Ddoctest_DIR=/custom_sysroot/lib/cmake/doctest \
             -Dxeus_DIR=/custom_sysroot/lib/cmake/xeus
           emmake make -j2
           emmake make -j2 install
@@ -152,6 +153,7 @@ jobs:
            -Dnlohmann_json_DIR=/custom_sysroot/lib/cmake/nlohmann_json \
            -Dxeus_DIR=/custom_sysroot/lib/cmake/xeus \
            -Dxeus-lite_DIR=/custom_sysroot/lib/cmake/xeus-lite \
+           -Ddoctest_DIR=/custom_sysroot/lib/cmake/doctest \
            -DCMAKE_INSTALL_PREFIX=/custom_sysroot
 
       - name: Build rendered project
