@@ -138,7 +138,7 @@ jobs:
           emcmake cmake ../src \
             -DXEUS_EMSCRIPTEN_WASM_BUILD=ON \
             -DCMAKE_INSTALL_PREFIX=/custom_sysroot \
-            -Dxtl_DIR=custom_sysroot/share/cmake/xtl \
+            -Dxtl_DIR=/custom_sysroot/share/cmake/xtl \
             -Dnlohmann_json_DIR=/custom_sysroot/lib/cmake/nlohmann_json \
             -Ddoctest_DIR=/custom_sysroot/lib/cmake/doctest \
             -Dxeus_DIR=/custom_sysroot/lib/cmake/xeus
