@@ -113,33 +113,52 @@ if(EMSCRIPTEN)
     set(EMSCRIPTEN_FEATURES "${EMSCRIPTEN_FEATURES} -s \"EXTRA_EXPORTED_RUNTIME_METHODS=[ENV']\"")
 endif()
 
-
-# Building KariLang as Static Library
-add_library(KariLang_language STATIC 
-    src/main.c
-    src/KariLang/src/semantics.c
-    src/KariLang/src/interpreter.c
-    src/KariLang/src/parser.tab.c
-    src/KariLang/src/lex.yy.c
-)
-target_compile_options(KariLang_language PUBLIC "-fPIC")
-
 # Source files
 # ============
+if(EMSCRIPTEN)
+    # Building KariLang as Static Library
+    add_library(KariLang_language STATIC 
+        src/main.c
+        src/KariLang/src/semantics.c
+        src/KariLang/src/interpreter.c
+        src/KariLang/src/parser.tab.c
+        src/KariLang/src/lex.yy.c
+    )
+    target_compile_options(KariLang_language PUBLIC "-fPIC")
 
-set(KARILANG_HEADERS
-    include/src/config.hpp
-    include/src/xinterpreter.hpp
-)
+    set(KARILANG_HEADERS
+        include/src/config.hpp
+        include/src/xinterpreter.hpp
+    )
 
-set(KARILANG_SRC
-    src/xinterpreter.cpp
-    src/utils.cpp
-)
+    set(KARILANG_SRC
+        src/xinterpreter.cpp
+        src/utils.cpp
+    )
 
-set(KARILANG_MAIN_SRC
-    src/main.cpp
-)
+    set(KARILANG_MAIN_SRC
+        src/main.cpp
+    )
+else ()
+    set(KARILANG_HEADERS
+        include/src/config.hpp
+        include/src/xinterpreter.hpp
+    )
+
+    set(KARILANG_SRC
+        src/xinterpreter.cpp
+        src/utils.cpp
+        src/main.c
+        src/KariLang/src/semantics.c
+        src/KariLang/src/interpreter.c
+        src/KariLang/src/parser.tab.c
+        src/KariLang/src/lex.yy.c
+    )
+
+    set(KARILANG_MAIN_SRC
+        src/main.cpp
+    )
+endif ()
 
 
 # Targets and link - Macros
@@ -284,7 +303,7 @@ if (KARILANG_BUILD_EXECUTABLE)
     target_compile_features(xkarilang PRIVATE cxx_std_17)
     karilang_set_common_options(xkarilang)
     karilang_set_kernel_options(xkarilang)
-    target_link_libraries(xkarilang PRIVATE xeus-zmq KariLang_language)
+    target_link_libraries(xkarilang PRIVATE xeus-zmq)
 endif()
 
 if(EMSCRIPTEN)
