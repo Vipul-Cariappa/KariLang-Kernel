@@ -146,3 +146,4 @@ compile_commands.json
 *.cmake
 xkarilang
 tmp/
+__pycache__/
