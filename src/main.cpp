@@ -24,6 +24,7 @@
 #include "xeus/xkernel.hpp"
 #include "xeus/xkernel_configuration.hpp"
 #include "xeus-zmq/xserver_zmq.hpp"
+#include "xeus-zmq/xzmq_context.hpp"
 
 
 #include "src/xinterpreter.hpp"
@@ -102,7 +103,7 @@ int main(int argc, char* argv[])
     signal(SIGSEGV, handler);
 #endif
 
-    auto context = xeus::make_context<zmq::context_t>();
+    std::unique_ptr<xeus::xcontext> context = xeus::make_zmq_context();
 
     // Instantiating the xeus xinterpreter
     using interpreter_ptr = std::unique_ptr<karilang_kernel::interpreter>;
@@ -119,7 +120,7 @@ int main(int argc, char* argv[])
                              xeus::get_user_name(),
                              std::move(context),
                              std::move(interpreter),
-                             xeus::make_xserver_zmq);
+                             xeus::make_xserver_default);
 
         std::cout <<
             "Starting xkarilang kernel...\n\n"
@@ -134,7 +135,7 @@ int main(int argc, char* argv[])
         xeus::xkernel kernel(xeus::get_user_name(),
                              std::move(context),
                              std::move(interpreter),
-                             xeus::make_xserver_zmq);
+                             xeus::make_xserver_default);
 
         const auto& config = kernel.get_config();
         std::cout <<
