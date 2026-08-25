@@ -31,11 +31,11 @@ namespace karilang_kernel {
 
 interpreter::interpreter() { xeus::register_interpreter(this); }
 
-nl::json interpreter::execute_request_impl(int execution_counter,
-                                           const std::string &code, bool silent,
-                                           bool store_history,
-                                           nl::json user_expressions,
-                                           bool allow_stdin) {
+void interpreter::execute_request_impl(send_reply_callback cb,
+                                      int execution_counter,
+                                      const std::string &code,
+                                      xeus::execute_request_config /*config*/,
+                                      nl::json /*user_expressions*/) {
 
     nl::json pub_data;
 
@@ -45,13 +45,13 @@ nl::json interpreter::execute_request_impl(int execution_counter,
 
     if (STDERR_REDIRECT_STRING[0]) {
         publish_execution_error("Error", STDERR_REDIRECT_STRING, {});
-        return xeus::create_error_reply("Error", STDERR_REDIRECT_STRING);
+        cb(xeus::create_error_reply("Error", STDERR_REDIRECT_STRING));
     } else {
         pub_data["text/plain"] = STDOUT_REDIRECT_STRING;
         publish_execution_result(execution_counter, std::move(pub_data),
                                  nl::json::object());
 
-        return xeus::create_successful_reply();
+        cb(xeus::create_successful_reply());
     }
 }
 
@@ -79,11 +79,17 @@ nl::json interpreter::inspect_request_impl(const std::string & /*code*/,
     return xeus::create_inspect_reply();
 }
 
-void interpreter::shutdown_request_impl() { std::cout << "Bye!!" << std::endl; }
+nl::json interpreter::shutdown_request_impl(bool restart) {
+    std::cout << "Bye!!" << std::endl;
+    return xeus::create_shutdown_reply(restart);
+}
+
+nl::json interpreter::interrupt_request_impl() {
+    return xeus::create_interrupt_reply();
+}
 
 nl::json interpreter::kernel_info_request_impl() {
 
-    const std::string protocol_version = "5.3";
     const std::string implementation = "xkarilang";
     const std::string implementation_version = KARILANG_VERSION;
     const std::string language_name = "KariLang";
@@ -96,14 +102,13 @@ nl::json interpreter::kernel_info_request_impl() {
     const std::string language_codemirror_mode = "";
     const std::string language_nbconvert_exporter = "";
     const std::string banner = "xkarilang";
-    const bool debugger = true;
     const nl::json help_links = nl::json::array();
 
     return xeus::create_info_reply(
-        protocol_version, implementation, implementation_version, language_name,
-        language_version, language_mimetype, language_file_extension,
-        language_pygments_lexer, language_codemirror_mode,
-        language_nbconvert_exporter, banner, debugger, help_links);
+        implementation, implementation_version, language_name, language_version,
+        language_mimetype, language_file_extension, language_pygments_lexer,
+        language_codemirror_mode, language_nbconvert_exporter, banner,
+        help_links);
 }
 
 } // namespace karilang_kernel

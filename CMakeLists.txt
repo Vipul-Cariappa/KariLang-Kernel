@@ -6,7 +6,7 @@
 #The full license is in the file LICENSE, distributed with this software. 
 #############################################################################
 
-cmake_minimum_required(VERSION 3.4.3)
+cmake_minimum_required(VERSION 3.15)
 project(xeus-karilang)
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
 
@@ -75,12 +75,9 @@ endif()
 # Dependencies
 # ============
 
-set(xtl_REQUIRED_VERSION 0.7.0)
-set(xeus_REQUIRED_VERSION 3.0.0)
+set(xeus_REQUIRED_VERSION 6.0.0)
+set(xeus-zmq_REQUIRED_VERSION 4.0.0)
 
-if (NOT TARGET xtl)
-    find_package(xtl ${xtl_REQUIRED_VERSION} REQUIRED)
-endif ()
 if (NOT TARGET xeus AND NOT TARGET xeus-static)
     find_package(xeus ${xeus_REQUIRED_VERSION} REQUIRED)
 endif ()
@@ -258,7 +255,7 @@ macro(karilang_create_target target_name linkage output_name)
         set(KARILANG_XEUS_TARGET xeus-static)
     endif ()
 
-    target_link_libraries(${target_name} PUBLIC ${KARILANG_XEUS_TARGET} xtl)
+    target_link_libraries(${target_name} PUBLIC ${KARILANG_XEUS_TARGET})
     if (WIN32 OR CYGWIN)
         #
     elseif (APPLE)
@@ -298,7 +295,7 @@ endif ()
 # xkarilang
 # =======
 if (KARILANG_BUILD_EXECUTABLE)
-    find_package(xeus-zmq 1.0.1 REQUIRED)
+    find_package(xeus-zmq ${xeus-zmq_REQUIRED_VERSION} REQUIRED)
     add_executable(xkarilang ${KARILANG_MAIN_SRC})
     target_compile_features(xkarilang PRIVATE cxx_std_17)
     karilang_set_common_options(xkarilang)

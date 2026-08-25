@@ -196,7 +196,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        emsdk_ver: ["3.1.46"]
+        emsdk_ver: ["4.0.9"]
 
     steps:
       - uses: actions/checkout@v4
@@ -217,17 +217,17 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y bison gcc g++ cmake make build-essential flex
 
+      # Not the conda emsdk package: it stops at 3.1.46, and the packages this
+      # kernel links against are built for the emscripten 4 ABI.
       - name: Setup emsdk
-        shell: bash -l {0}
-        run: emsdk install ${{ matrix.emsdk_ver }}
+        uses: mymindstorm/setup-emsdk@v16
+        with:
+          version: ${{ matrix.emsdk_ver }}
 
       - name: Build
         shell: bash -l {0}
         run: |
-          emsdk activate ${{ matrix.emsdk_ver }}
-          
-          source $CONDA_EMSDK_DIR/emsdk_env.sh
-          micromamba create -f environment-wasm-host.yml --platform=emscripten-wasm32
+          micromamba create -y -f environment-wasm-host.yml --platform=emscripten-wasm32
 
           export EMPACK_PREFIX=$MAMBA_ROOT_PREFIX/envs/xeus-karilang-wasm-build
           export PREFIX=$MAMBA_ROOT_PREFIX/envs/xeus-karilang-wasm-host
